@@ -1,30 +1,29 @@
 import pygame
-import mysql.connector
-
-class Element:
+from affichage import Affichage
+class Element(Affichage):
     def __init__(self):
-        self.db = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="F1m13I12l5*",
-            database="store"
-        )
-        self.cursor = self.db.cursor()
+        Affichage.__init__(self)
         self.white = (255, 255, 255)
         self.black = (0, 0, 0)
         self.grey = (122, 122, 122)
-        self.W = 800 
-        self.H = 600
-        self.screen = pygame.display.set_mode((self.W, self.H))
-        pygame.display.set_caption("Gestion de Stock")
+
 
         button_add_product = pygame.Rect(50, 50, 200, 50)
         button_view_stock = pygame.Rect(50, 150, 200, 50)
 
         # Font
-        font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font("Arial", 36)
 
-        def draw_text(text, color, x, y):
-            surface = font.render(text, True, color)
-            screen.blit(surface, (x, y))
+    def draw_text(self, text, color, x, y):
+        self.surface = self.font.render(text, True, color)
+        self.screen.blit(self.surface, (x, y))
 
+    def solid_rect(self, color, x, y, largeur, longueur):
+        pygame.draw.rect(self.screen,color, (x, y, largeur, longueur))
+            
+    def light_rect(self, fill_color, border_color, x, y, largeur, longueur, border_width=2):
+        # Draw filled inner rectangle
+        pygame.draw.rect(self.screen, fill_color, (x, y, largeur, longueur))
+
+        # Draw border
+        pygame.draw.rect(self.screen, border_color, (x, y, largeur, longueur), border_width)
